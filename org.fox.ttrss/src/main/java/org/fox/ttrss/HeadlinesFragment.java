@@ -113,6 +113,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
     private OnlineActivity m_activity;
     private SwipeRefreshLayout m_swipeLayout;
     private boolean m_compactLayoutMode = false;
+    private boolean m_compactNoImagesMode = false;
     private boolean m_splitLayoutMode = false;
     private RecyclerView m_list;
     private LinearLayoutManager m_layoutManager;
@@ -227,6 +228,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
             m_feed = savedInstanceState.getParcelable("m_feed");
             m_searchQuery = savedInstanceState.getString("m_searchQuery");
             m_compactLayoutMode = savedInstanceState.getBoolean("m_compactLayoutMode");
+            m_compactNoImagesMode = savedInstanceState.getBoolean("m_compactNoImagesMode");
             m_splitLayoutMode = savedInstanceState.getBoolean("m_splitLayoutMode");
         }
 
@@ -242,6 +244,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
         out.putParcelable("m_feed", m_feed);
         out.putString("m_searchQuery", m_searchQuery);
         out.putBoolean("m_compactLayoutMode", m_compactLayoutMode);
+        out.putBoolean("m_compactNoImagesMode", m_compactNoImagesMode);
         out.putBoolean("m_splitLayoutMode", m_splitLayoutMode);
     }
 
@@ -255,6 +258,9 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
 
         if ("HL_COMPACT".equals(headlineMode) || "HL_COMPACT_NOIMAGES".equals(headlineMode))
             m_compactLayoutMode = true;
+
+        if ("HL_COMPACT_NOIMAGES".equals(headlineMode))
+            m_compactNoImagesMode = true;
 
         if ("HL_SPLIT".equals(headlineMode))
             m_splitLayoutMode = true;
@@ -1369,10 +1375,15 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
 
         private void updateTextImage(final Article article, final ArticleViewHolder holder) {
             if (holder.textImage != null) {
-                updateTextCheckedState(article, holder);
+                if (m_compactNoImagesMode) {
+                    ((View) holder.textImage.getParent()).setVisibility(View.GONE);
+                } else {
+                    ((View) holder.textImage.getParent()).setVisibility(View.VISIBLE);
+                    updateTextCheckedState(article, holder);
 
-                ViewCompat.setTransitionName(holder.textImage,
-                        "gallery:" + article.flavorImageUri);
+                    ViewCompat.setTransitionName(holder.textImage,
+                            "gallery:" + article.flavorImageUri);
+                }
             }
         }
 
