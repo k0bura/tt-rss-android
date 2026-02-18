@@ -63,6 +63,20 @@ public class MasterActivity extends OnlineActivity implements HeadlinesEventList
 
         setSmallScreen(findViewById(R.id.sw600dp_anchor) == null);
 
+        View navigationView = findViewById(R.id.navigation_view);
+        if (navigationView != null) {
+            int drawerWidthDp = m_prefs.getInt("drawer_width_dp", 300);
+            float density = getResources().getDisplayMetrics().density;
+            navigationView.getLayoutParams().width = (int) (drawerWidthDp * density);
+        }
+
+        View modalNavigationView = findViewById(R.id.modal_navigation_view);
+        if (modalNavigationView != null) {
+            int drawerWidthDp = m_prefs.getInt("drawer_width_dp", 300);
+            float density = getResources().getDisplayMetrics().density;
+            modalNavigationView.getLayoutParams().width = (int) (drawerWidthDp * density);
+        }
+
         applyEdgeToEdgeInsets();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
