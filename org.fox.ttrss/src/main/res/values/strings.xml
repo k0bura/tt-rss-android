@@ -279,7 +279,7 @@
     <string name="prefs_inline_video_player_title">Inline video player</string>
     <string name="force_phone_layout_summary">On tablet devices</string>
     <string name="pref_drawer_width">Feed drawer width</string>
-    <string name="pref_drawer_width_summary">Width of the feed list in landscape mode (dp)</string>
+    <string name="pref_drawer_width_summary">Feed list width in landscape mode (dp)</string>
     <string name="force_phone_layout">Force phone layout</string>
     <string name="catchup_dialog_title">Mark %1$s as read?</string>
     <string name="catchup_dialog_title_search">Mark search results in %1$s as read?</string>
