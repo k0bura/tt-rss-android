@@ -115,6 +115,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
     private boolean m_compactLayoutMode = false;
     private boolean m_compactNoImagesMode = false;
     private boolean m_splitLayoutMode = false;
+    private boolean m_condensedLayoutMode = false;
     private RecyclerView m_list;
     private LinearLayoutManager m_layoutManager;
     private HeadlinesFragmentModel m_headlinesFragmentModel;
@@ -230,6 +231,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
             m_compactLayoutMode = savedInstanceState.getBoolean("m_compactLayoutMode");
             m_compactNoImagesMode = savedInstanceState.getBoolean("m_compactNoImagesMode");
             m_splitLayoutMode = savedInstanceState.getBoolean("m_splitLayoutMode");
+            m_condensedLayoutMode = savedInstanceState.getBoolean("m_condensedLayoutMode");
         }
 
         setRetainInstance(true);
@@ -246,6 +248,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
         out.putBoolean("m_compactLayoutMode", m_compactLayoutMode);
         out.putBoolean("m_compactNoImagesMode", m_compactNoImagesMode);
         out.putBoolean("m_splitLayoutMode", m_splitLayoutMode);
+        out.putBoolean("m_condensedLayoutMode", m_condensedLayoutMode);
     }
 
     @Override
@@ -261,6 +264,9 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
 
         if ("HL_COMPACT_NOIMAGES".equals(headlineMode))
             m_compactNoImagesMode = true;
+
+        if ("HL_CONDENSED".equals(headlineMode))
+            m_condensedLayoutMode = true;
 
         if ("HL_SPLIT".equals(headlineMode))
             m_splitLayoutMode = true;
@@ -775,7 +781,9 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
         public ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
             int layoutId = R.layout.headlines_row;
-            if (m_compactLayoutMode) {
+            if (m_condensedLayoutMode) {
+                layoutId = R.layout.headlines_row_condensed;
+            } else if (m_compactLayoutMode) {
                 layoutId = R.layout.headlines_row_compact;
             } else if (m_splitLayoutMode) {
                 layoutId = R.layout.headlines_row_split;
@@ -1056,7 +1064,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
         }
 
         private void updateUnreadView(final Article article, final ArticleViewHolder holder) {
-            if (m_compactLayoutMode) {
+            if (m_compactLayoutMode || m_condensedLayoutMode) {
                 holder.view.setBackgroundColor(article.unread ? m_colorSurfaceContainerLowest : 0);
             } else {
                 MaterialCardView card = (MaterialCardView) holder.view;
@@ -1120,7 +1128,7 @@ public class HeadlinesFragment extends androidx.fragment.app.Fragment {
             updateDateView(article, holder);
             updateSelectedView(article, holder);
 
-            if (!m_compactLayoutMode && holder.flavorImageHolder != null) {
+            if (!m_compactLayoutMode && !m_condensedLayoutMode && holder.flavorImageHolder != null) {
 
                 // reset our view to default in case of recycling
                 holder.flavorImageLoadingBar.setVisibility(View.GONE);

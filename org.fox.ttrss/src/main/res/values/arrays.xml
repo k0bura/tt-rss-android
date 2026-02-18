@@ -15,6 +15,7 @@
         <item>@string/headline_display_mode_compact</item>
         <item>@string/headline_display_mode_compact_noimages</item>
         <item>@string/headline_display_mode_split</item>
+        <item>@string/headline_display_mode_condensed</item>
     </string-array>
     <string-array name="headline_mode_values" translatable="false">
         <item>HL_DEFAULT</item>
@@ -22,6 +23,7 @@
         <item>HL_COMPACT</item>
         <item>HL_COMPACT_NOIMAGES</item>
         <item>HL_SPLIT</item>
+        <item>HL_CONDENSED</item>
     </string-array>
     <string-array name="pref_offline_amounts" translatable="false">
         <item>150</item>
