@@ -195,6 +195,11 @@
             android:key="article_javascript_enabled"
             android:summary="@string/article_enable_javascript_summary"
             android:title="@string/article_enable_javascript" />
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="immersive_mode"
+            android:summary="@string/immersive_mode_summary"
+            android:title="@string/immersive_mode" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/prefs_opening_links" >
         <SwitchPreferenceCompat

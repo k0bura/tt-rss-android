@@ -12,6 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
@@ -43,10 +48,27 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
             setContentView(R.layout.activity_detail);
         }
 
+        boolean immersive = m_prefs.getBoolean("immersive_mode", false);
+
+        View contentRoot = ((android.view.ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+        if (!immersive) {
+            contentRoot.setFitsSystemWindows(true);
+            contentRoot.requestApplyInsets();
+        }
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        if (immersive) {
+            int statusBarHeight = 0;
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+            toolbar.setPadding(toolbar.getPaddingLeft(), statusBarHeight, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
+        }
 
         setSmallScreen(findViewById(R.id.sw600dp_anchor) == null);
 
@@ -158,6 +180,18 @@ public class DetailActivity extends OnlineActivity implements HeadlinesEventList
 
                 initBottomBarMenu();
             }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        WindowInsetsControllerCompat insetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        if (m_prefs.getBoolean("immersive_mode", false)) {
+            insetsController.hide(WindowInsetsCompat.Type.systemBars());
+        } else {
+            insetsController.show(WindowInsetsCompat.Type.systemBars());
         }
     }
 
